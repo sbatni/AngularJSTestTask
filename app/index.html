@@ -11,59 +11,62 @@
 -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="js/app.js"></script>
-<script src="pages/ItemController.js"></script>
-
+<script src="pages/items-controller.js"></script>
+<script src="pages/unique-validator.js"></script>
+<link rel="stylesheet" type="text/css" href="app.css">
 
 <div ng-controller="ItemListCtrl as main">
   <!--Body content-->
-  <p>Item List {{main.message}}</p>
+  <p>Item Listing</p>
   <table  border="1">
     <thead>
-      <th>Item</th>
-      <th>Sku</th>
-      <th>Price</th>
-      <th>Action</th>
+    <tr>
+      <th width="100">Sku</th>
+      <th width="100">Item</th>
+      <th width="100">Price</th>
+      <th width="150">Action</th>
+    </tr>
     </thead>
     <tr ng-repeat="item in main.items">
-      <td>{{item.name}}</td>
       <td>{{item.sku}}</td>
+      <td>{{item.name}}</td>
       <td>{{item.price | currency}}</td>
       <td>
-        <button ng-click="main.editItem($index)">Edit</button>
-        <button ng-click="main.deleteItem($index)">Delete</button>
+        <button ng-click="main.editItem($index)">edit</button>
+        <button ng-click="main.deleteItem($index)">delete</button>
       </td>
     </tr>
   </table>
 
+  <br>
   <div>
-    <p> Add Item</p>
-    <form novalidate name="addForm">
-      Item Name:<br>
-      <input type="text" ng-model="main.prod.name" required><br>
-      Sku<br>
-      <input type="text" ng-model="main.prod.sku" required>
-      <br>
-      Price<br>
-      <input type="text" ng-model="main.prod.price" required>
+    <p><h2> Add/Update Item</h2></p>
+    <form novalidate name="inputForm">
+      <div>
+        Item Name<br>
+        <input type="text" name="name" ng-model="main.prod.name" required>
+        <span name="error" class="error_show"  ng-show="inputForm.name.$invalid && inputForm.name.$dirty && inputForm.name.$error.required">
+              This field is required</span>
+      </div>
+      <div>
+        Sku<br>
+        <input type="text" name="sku" ng-model="main.prod.sku" required unique-validater index=main.selectedIndex items=main.items>
+        <span name="error" class="error_show" ng-show="(inputForm.sku.$error.required || inputForm.sku.$error.unique) &&
+              inputForm.sku.$invalid && inputForm.sku.$dirty">This field is required/Duplicate sku</span>
+      </div>
+      <div>
+        Price<br>
+        <input type="text" name="price" ng-model="main.prod.price" ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" required>
+        <span name="error" class="error_show" ng-show="inputForm.price.$invalid && inputForm.price.$dirty">
+              This field is required and has to be a number</span>
+      </div>
       <br><br>
-      <button ng-click="main.addItem()" ng-disabled=addForm.$invalid >Add</button>
+      <div>
+        <button ng-click="main.saveItem()" ng-disabled="inputForm.$invalid" >Save</button>
+      </div>
     </form>
   </div>
 
-  <div>
-    <p> Edit Item</p>
-    <form novalidate name="editForm">
-      Item Name:<br>
-      <input type="text" ng-model="main.editProd.name" required><br>
-      Sku<br>
-      <input type="text" ng-model="main.editProd.sku" required>
-      <br>
-      Price<br>
-      <input type="text" ng-model="main.editProd.price" required>
-      <br><br>
-      <button ng-click="main.saveItem()" ng-disabled=editForm.$invalid>Save</button>
-    </form>
-  </div>
 </div>
 </body>
 </html>
