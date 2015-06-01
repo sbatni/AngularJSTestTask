@@ -24,6 +24,8 @@ app.controller('ItemListCtrl', function() {
     var price;
     this.editProd;
     this.editIndex=-1;
+    this.adding = true;
+    this.editing = false;
 
     this.addItem = function () {
         if (this.validateFields(this.prod) === true) {
@@ -43,21 +45,25 @@ app.controller('ItemListCtrl', function() {
     };
 
     this.editItem = function (idx) {
+        this.editing = true;
+        this.adding = false;
         this.prod = {};
         name = this.items[idx].name;
         sku = this.items[idx].sku;
         price = this.items[idx].price;
-        this.editProd = {'name': name,
+        this.prod = {'name': name,
                             'sku':  sku,
                             'price':  price};
         this.editIndex = idx;
     };
 
     this.saveItem = function () {
-        if (this.validateFields(this.editProd) === true) {
-            this.items[this.editIndex] = this.editProd;
-            this.editProd = {};
+        if (this.validateFields(this.prod) === true) {
+            this.items[this.editIndex] = this.prod;
+            this.prod = {};
             this.editIndex = -1;
+            this.editing = false;
+            this.adding = true;
         }
     };
 

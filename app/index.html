@@ -16,7 +16,7 @@
 
 <div ng-controller="ItemListCtrl as main">
   <!--Body content-->
-  <p>Item List {{main.message}}</p>
+    <p>Item Listing</p>
   <table  border="1">
     <thead>
       <th>Item</th>
@@ -36,9 +36,9 @@
   </table>
 
   <div>
-    <p> Add Item</p>
-    <form novalidate name="addForm">
-      Item Name:<br>
+    <p><h2> Add/Update Item</h2></p>
+    <form novalidate name="inputForm">
+      Item Name<br>
       <input type="text" ng-model="main.prod.name" required><br>
       Sku<br>
       <input type="text" ng-model="main.prod.sku" required>
@@ -46,24 +46,11 @@
       Price<br>
       <input type="text" ng-model="main.prod.price" required>
       <br><br>
-      <button ng-click="main.addItem()" ng-disabled=addForm.$invalid >Add</button>
+      <button ng-click="main.addItem()" ng-disabled="inputForm.$invalid || main.editing" >Add</button>
+      <button ng-click="main.saveItem()" ng-disabled="inputForm.$invalid  || main.adding">Update</button>
     </form>
   </div>
 
-  <div>
-    <p> Edit Item</p>
-    <form novalidate name="editForm">
-      Item Name:<br>
-      <input type="text" ng-model="main.editProd.name" required><br>
-      Sku<br>
-      <input type="text" ng-model="main.editProd.sku" required>
-      <br>
-      Price<br>
-      <input type="text" ng-model="main.editProd.price" required>
-      <br><br>
-      <button ng-click="main.saveItem()" ng-disabled=editForm.$invalid>Save</button>
-    </form>
-  </div>
 </div>
 </body>
 </html>
