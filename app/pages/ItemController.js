@@ -2,100 +2,50 @@
 
 /* Controllers */
 
-var app = angular.module('pmpApp', []);
+var app = angular.module('pmpApp');
 
-app.controller('ItemListCtrl', function() {
-    this.items = [
-        {'name': 'Product 1',
-            'sku': 'sku1',
-            'price': '100'},
-        {'name': 'Product 2',
-            'sku': 'sku2',
-            'price': '250'},
-        {'name': 'Product 3',
-            'sku': 'sku3',
-            'price': '350'}
-    ];
-    this.message = "Testing";
+app.controller('ItemListCtrl', function($scope) {
+    this.items = [];
     this.prod={};
-    this.editProd={};
     var name;
     var sku;
     var price;
-    this.editProd;
-    this.editIndex=-1;
-    this.adding = true;
-    this.editing = false;
+    this.selectedIndex=-1;
 
-    this.addItem = function () {
-        if (this.validateFields(this.prod) === true) {
+    this.saveItem = function () {
+        if(this.selectedIndex === -1)
+        {
             this.items.push({
                 'name': this.prod.name,
                 'sku': this.prod.sku,
                 'price': this.prod.price
             });
-            this.prod = {};
         }
+        else {
+            this.items[this.selectedIndex] = this.prod;
+        }
+        name = "";
+        sku = "";
+        price = "";
+        this.prod = {};
+        this.selectedIndex = -1;
+        $scope.inputForm.$setPristine();
     };
 
     this.deleteItem = function (idx) {
-        if(confirm("Are you sure you want to delete the Item?")) {
+        if(confirm("Delete selected product?")) {
             this.items.splice(idx, 1);
         }
     };
 
     this.editItem = function (idx) {
-        this.editing = true;
-        this.adding = false;
         this.prod = {};
+        this.selectedIndex = idx;
         name = this.items[idx].name;
         sku = this.items[idx].sku;
         price = this.items[idx].price;
         this.prod = {'name': name,
-                            'sku':  sku,
-                            'price':  price};
-        this.editIndex = idx;
-    };
-
-    this.saveItem = function () {
-        if (this.validateFields(this.prod) === true) {
-            this.items[this.editIndex] = this.prod;
-            this.prod = {};
-            this.editIndex = -1;
-            this.editing = false;
-            this.adding = true;
-        }
-    };
-
-    this.validateFields = function(object) {
-
-        if (object.name === '' || object.sku === '' || object.price === '') {
-            alert("All fields are required");
-            return false;
-        }
-
-        if (isNaN(object.price)) {
-            alert("Price not a number");
-            return false;
-        }
-
-        for (var key=0, size=this.items.length; key<size;key++) {
-            if(this.items[key].sku === object.sku) {
-                //adding item
-                if(this.editIndex == -1) {
-                    alert("Duplicate sku");
-                    return false;
-                }
-                //editing item
-                else if(key !== this.editIndex)
-                {
-                    alert("Duplicate sku");
-                    return false;
-                }
-
-            }
-        }
-        return true;
-
+            'sku':  sku,
+            'price':  price};
     };
 });
