@@ -28,10 +28,15 @@ app.directive('uniqueValidate', function() {
             ctrl.$parsers.unshift(function(value) {
                 // test and set the validity after update.
                 var valid = true;
-                for (var key=0, size=scope.datasource.length; key<size;key++) {
-                    if(scope.datasource[key].sku === value) {
-                        if(key !== scope.index) {
-                            valid = false;
+                if(!value) {
+                    valid = false;
+                }
+                else {
+                    for (var key = 0, size = scope.datasource.length; key < size; key++) {
+                        if (scope.datasource[key][ctrl.$name] === value) {
+                            if (key !== scope.index) {
+                                valid = false;
+                            }
                         }
                     }
                 }
