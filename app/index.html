@@ -11,8 +11,8 @@
 -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="js/app.js"></script>
-<script src="pages/ItemController.js"></script>
-<script src="pages/Validators.js"></script>
+<script src="pages/items-controller.js"></script>
+<script src="pages/unique-validator.js"></script>
 <link rel="stylesheet" type="text/css" href="app.css">
 
 <div ng-controller="ItemListCtrl as main">
@@ -43,22 +43,22 @@
     <p><h2> Add/Update Item</h2></p>
     <form novalidate name="inputForm">
       <div>
-        <input type="hidden" name="prodid">
-      </div>
-      <div>
         Item Name<br>
         <input type="text" name="name" ng-model="main.prod.name" required>
-        <span name="error" class="error_show"  ng-show="inputForm.name.$invalid && inputForm.name.$dirty && inputForm.name.$touched">This field is required</span>
+        <span name="error" class="error_show"  ng-show="inputForm.name.$invalid && inputForm.name.$dirty && inputForm.name.$error.required">
+              This field is required</span>
       </div>
       <div>
         Sku<br>
-        <input type="text" name="sku" ng-model="main.prod.sku" required unique-validate index=main.selectedIndex datasource=main.items>
-        <span name="error" class="error_show" ng-show="inputForm.sku.$error.uniqueValidate">This field is required/Duplicate sku</span>
+        <input type="text" name="sku" ng-model="main.prod.sku" required unique-validater index=main.selectedIndex items=main.items>
+        <span name="error" class="error_show" ng-show="(inputForm.sku.$error.required || inputForm.sku.$error.unique) &&
+              inputForm.sku.$invalid && inputForm.sku.$dirty">This field is required/Duplicate sku</span>
       </div>
       <div>
         Price<br>
         <input type="text" name="price" ng-model="main.prod.price" ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" required>
-        <span name="error" class="error_show" ng-show="inputForm.price.$invalid && inputForm.price.$dirty">This field is required and has to be a number</span>
+        <span name="error" class="error_show" ng-show="inputForm.price.$invalid && inputForm.price.$dirty">
+              This field is required and has to be a number</span>
       </div>
       <br><br>
       <div>

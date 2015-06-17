@@ -7,9 +7,6 @@ var app = angular.module('pmpApp');
 app.controller('ItemListCtrl', function($scope) {
     this.items = [];
     this.prod={};
-    var name;
-    var sku;
-    var price;
     this.selectedIndex=-1;
 
     this.saveItem = function () {
@@ -24,16 +21,13 @@ app.controller('ItemListCtrl', function($scope) {
         else {
             this.items[this.selectedIndex] = this.prod;
         }
-        name = "";
-        sku = "";
-        price = "";
         this.prod = {};
         this.selectedIndex = -1;
         $scope.inputForm.$setPristine();
     };
 
     this.deleteItem = function (idx) {
-        if(confirm("Delete selected product?")) {
+        if(confirm('Delete selected product?')) {
             this.items.splice(idx, 1);
         }
     };
@@ -41,11 +35,11 @@ app.controller('ItemListCtrl', function($scope) {
     this.editItem = function (idx) {
         this.prod = {};
         this.selectedIndex = idx;
-        name = this.items[idx].name;
-        sku = this.items[idx].sku;
-        price = this.items[idx].price;
+        var name = this.items[idx].name;
+        var sku = this.items[idx].sku;
+        var price = this.items[idx].price;
         this.prod = {'name': name,
-            'sku':  sku,
-            'price':  price};
+                    'sku':  sku,
+                    'price':  price};
     };
 });
