@@ -50,8 +50,8 @@
       </div>
       <div>
         Sku<br>
-        <input type="text" name="sku" ng-model="main.prod.sku" required unique-validater index=main.selectedIndex items=main.items>
-        <span name="error" class="error_show" ng-show="(inputForm.sku.$error.required || inputForm.sku.$error.unique) &&
+        <input type="text" name="sku" ng-model="main.prod.sku" required unique-validater index="main.selectedIndex" items="main.items">
+        <span name="error" class="error_show" ng-show="(inputForm.sku.$error.required || inputForm.sku.$error.uniqness) &&
               inputForm.sku.$invalid && inputForm.sku.$dirty">This field is required/Duplicate sku</span>
       </div>
       <div>
@@ -62,7 +62,7 @@
       </div>
       <br><br>
       <div>
-        <button ng-click="main.saveItem()" ng-disabled="inputForm.$invalid" >Save</button>
+        <button ng-click="main.saveItem(inputForm)" ng-disabled="inputForm.$invalid" >Save</button>
       </div>
     </form>
   </div>
