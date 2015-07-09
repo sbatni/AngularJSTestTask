@@ -31,5 +31,3 @@ app.directive('uniqueValidater', function() {
     }
   };
 });
-
-
